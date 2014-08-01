@@ -17,7 +17,7 @@ FUTURE_URL="$BASE_URL=33100821"
 
 USER="dzeber"
 USER+="@mozilla.com"
-OUTPUT_DIR=~/fxos/launchstats
+OUTPUT_DIR=~/fxos/launchstats/html
 OUT_HISTORY=$OUTPUT_DIR/lh.html
 OUT_FUTURE=$OUTPUT_DIR/lr.html
 
