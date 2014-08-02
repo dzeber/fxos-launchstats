@@ -42,7 +42,8 @@ download_table $FUTURE_URL $OUT_FUTURE
 echo "Download done."
 echo "Processing tables."
 
-R CMD BATCH --no-restore --no-save $THIS_DIR/launchstats.R
+cd $THIS_DIR
+Rscript --vanilla launchstats.R
 
 echo "Converted to CSV."
 

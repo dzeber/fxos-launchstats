@@ -11,6 +11,7 @@ source("launchstats-vars.R")
 setwd("~/fxos/launchstats")
 
 library(XML)
+library(data.table)
 
 ## HTML parsing. 
 load.html <- function(filename) {
