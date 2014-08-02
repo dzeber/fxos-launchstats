@@ -33,6 +33,10 @@ locale.codes <- c("brazilian" = "pt-br",
                 "english" = "en",
                 "arabic" = "ar",
                 "french" = "fr",
-                "russian" = "ru")
+                "russian" = "ru",
+                "vietnamese" = "vi",
+                "burmese" = "my",
+                "urdu" = "ur",
+                "taiwanese" = "zh-tw")
     
     
