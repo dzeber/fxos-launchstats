@@ -13,9 +13,14 @@ setwd("~/fxos/launchstats")
 library(XML)
 
 ## HTML parsing. 
-load.html <- function(file) {
-    h <- readLines(file, encoding = "UTF-8")
-
+load.html <- function(filename) {
+    con <- file(filename, encoding = "UTF-8")
+    h <- readLines(con, encoding = "UTF-8")
+    close(con)
+    
+    ## Try removing weird characters related to encoding issues. 
+    h <- gsub(rawToChar(charToRaw("\xc2\xa0")), "", h)
+    
     ## Trim whitespace and remove spaces from empty elements. 
     h <- paste0(h[!grepl("^\\s*$", h)], collapse = "")
     h <- gsub(">\\s+<", "><", h)
@@ -27,7 +32,7 @@ load.html <- function(file) {
 
 ## Parse history table. 
 
-lh <- load.html(html.files$history)
+lh <- load.html(html.files[["history"]])
 
 ## Extract table elements and convert to data tables. 
 lh <- readHTMLTable(lh, header = TRUE, as.data.frame = FALSE)
@@ -36,7 +41,7 @@ lh <- as.data.table(lh[[1]])
 
 ## Parse future table. 
 
-lr <- load.html(html.files$future)
+lr <- load.html(html.files[["future"]])
 
 lr <- readHTMLTable(lr, header = TRUE, as.data.frame = FALSE, 
     elFun = function(node) {
@@ -84,10 +89,10 @@ save(lh.raw, lr.raw, file = "RData/launchstatus-raw.RData")
 ## Historical. 
 
 ## Remove separator rows with text ("QX 201X")
-lh <- lh[!grepl("Q[1-4] 201[3-9]", Carrier)]
+lh <- lh[!grepl("Q[1-4] 201[3-9]", get(names(lh)[1]))]
 
 ## Rearrange and rename. 
-lh <- lh[, list(operator = Carrier, 
+lh <- lh[, list(operator = `Carrier/Partner`, 
             op.brand = `Local Brand`,
             country = Country,
             locale = L10N,
@@ -99,7 +104,7 @@ lh <- lh[, list(operator = Carrier,
 
 ## Missing values. 
 lh <- lh[, lapply(lh, function(r) { 
-    r[nchar(r) == 0 | r == "N/A"] <- NA; r 
+    r[nchar(r) == 0 | r %in% c("N/A", "TBD")] <- NA; r 
 })]
 
 ## Convert to country codes. 
@@ -212,6 +217,7 @@ lr[, locale := sub("\\s*\\(.+\\).*$", "", locale)]
 ## Make some specific replacements. 
 lr[grepl("brazilian", locale), locale := "brazilian"]
 lr[grepl("simp.+chinese", locale), locale := "chinese"]
+lr[grepl("trad.+chinese", locale), locale := "taiwanese"]
 ## Remove multiples, for now.
 lr[grepl(",", locale, fixed = TRUE), locale := NA]
 lr[!is.na(locale.codes[locale]), locale := locale.codes[locale]]
