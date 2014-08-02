@@ -21,6 +21,8 @@ OUTPUT_DIR=~/fxos/launchstats/html
 OUT_HISTORY=$OUTPUT_DIR/lh.html
 OUT_FUTURE=$OUTPUT_DIR/lr.html
 
+THIS_DIR=$(cd "`dirname "$0"`"; pwd)
+
 # Download from pages.
 # Pass URL and output file. 
 function download_table {
@@ -40,7 +42,7 @@ download_table $FUTURE_URL $OUT_FUTURE
 echo "Download done."
 echo "Processing tables."
 
-R CMD BATCH --no-restore --no-save launchstats.R
+R CMD BATCH --no-restore --no-save $THIS_DIR/launchstats.R
 
 echo "Converted to CSV."
 
