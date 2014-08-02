@@ -4,14 +4,16 @@
 ###  
 #######################################################################
 
+
+library(XML)
+library(data.table)
+
 ## Load info. 
 source("launchstats-vars.R")
 
 ## Change to output directory.
 setwd("~/fxos/launchstats")
 
-library(XML)
-library(data.table)
 
 ## HTML parsing. 
 load.html <- function(filename) {
