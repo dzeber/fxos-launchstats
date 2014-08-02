@@ -24,7 +24,9 @@ OUT_FUTURE=$OUTPUT_DIR/lr.html
 # Download from pages.
 # Pass URL and output file. 
 function download_table {
-    wget -w 1 --secure-protocol=auto --user=$USER --ask-password -O $2 $1
+    wget -w 1 --secure-protocol=auto \
+        --user=$USER --ask-password \
+        -O $2 $1
 }
 
 echo "Processing FxOS launch stats tables."
