@@ -43,7 +43,7 @@ echo "Download done."
 echo "Processing tables."
 
 cd $THIS_DIR
-Rscript --vanilla launchstats.R
+Rscript --no-restore --no-save --no-site-file launchstats.R
 
 echo "Converted to CSV."
 

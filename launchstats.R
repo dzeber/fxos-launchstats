@@ -6,7 +6,6 @@
 
 
 library(XML)
-library(data.table)
 
 ## Load info. 
 source("launchstats-vars.R")
